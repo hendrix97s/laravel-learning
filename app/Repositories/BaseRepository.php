@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\Cache;
+
 class  BaseRepository implements BaseInterface
 {
 
@@ -19,12 +21,20 @@ class  BaseRepository implements BaseInterface
 
   public function get()
   {
-    return $this->model->get();
+    $key = md5(get_class($this->model));
+    $model = $this->model;
+    return Cache::remember("$key", config('cache.expires'), function() use($model){
+      return $model->get();
+    });
   }
 
   public function find(int $id)
   {
-    return $this->model->find($id);
+    $key = md5(get_class($this->model)."_".$id);
+    $model = $this->model;
+    return Cache::remember($key, config('cache.expires'), function () use($model, $id){
+      return $model->find($id);
+    });
   }
 
   public function create(array $data)

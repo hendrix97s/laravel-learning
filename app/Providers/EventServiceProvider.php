@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Card;
+use App\Observers\CardObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      Card::observe(CardObserver::class);
     }
 
     /**

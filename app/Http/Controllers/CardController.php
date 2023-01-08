@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCardRequest;
 use App\Models\Card;
 use App\Repositories\CardRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CardController extends Controller
 {

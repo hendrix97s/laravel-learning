@@ -5,16 +5,31 @@ namespace Tests\Feature;
 use App\Models\Card;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class CardTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp():void
+    {
+      parent::setUp();
+    }
     
     public function test_card_index()
     {
       $this->withExceptionHandling();
+      $card = Card::factory()->create();
       $response = $this->get(route('card.index'));
       $response->assertStatus(200);
+      Cache::shouldReceive('remember')
+      ->with(md5(Card::class))
+      ->andReturn([
+        $card->toArray()
+      ]);
+
+      $this->assertEquals(1, count($response->json()));
     }
 
     public function test_card_store()
@@ -56,6 +71,11 @@ class CardTest extends TestCase
 
       $params = ['card_id' => $card->id];
       $response = $this->get(route('card.show', $params));
+
+      Cache::shouldReceive('remember')
+      ->with(md5(Card::class))
+      ->andReturn($card->toArray());
+
       $response->assertStatus(200);
     }
 
