@@ -13,7 +13,7 @@ class UpdateCardRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,10 @@ class UpdateCardRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+      return [
+        'name'        => 'sometimes|string|max:180',
+        'description' => 'sometimes|string|max:255',
+        'code'        => 'sometimes|string|max:50'
+      ];
     }
 }

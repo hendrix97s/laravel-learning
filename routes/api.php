@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('card', CardController::class)->parameter('card', 'card_id');
+Route::resource('card', CardController::class)->only('index', 'store', 'update', 'show', 'destroy')->parameter('card', 'card_id');
