@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CardController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('card', CardController::class)->parameter('card', 'card_id');
+Route::resource('card', CardController::class)->only('index', 'store', 'update', 'show', 'destroy')->parameter('card', 'card_id');
+Route::get('cache/clear', function(){
+  Cache::flush();
+})->name('cache.clear');

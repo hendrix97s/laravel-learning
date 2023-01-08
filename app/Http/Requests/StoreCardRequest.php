@@ -13,7 +13,7 @@ class StoreCardRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,10 @@ class StoreCardRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            //
-        ];
+      return [
+        'name'        => 'required|string|max:180',
+        'description' => 'required|string|max:255',
+        'code'        => 'required|string|max:50'
+      ];
     }
 }
